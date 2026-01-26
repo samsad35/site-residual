@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RT-MAE Poster - ICASSP 2025</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+        }
+        .poster-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-5px);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .accent-bar {
+            height: 4px;
+            width: 50px;
+            background: #4f46e5;
+            margin-bottom: 1rem;
+            border-radius: 2px;
+        }
+        @media (max-width: 1024px) {
+            .poster-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body class="p-6 md:p-12">
+
+    <!-- Header Section -->
+    <header class="max-w-7xl mx-auto mb-12 text-center bg-white p-10 rounded-[2.5rem] shadow-xl border border-slate-100">
+        <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6 tracking-tight leading-tight uppercase">
+            RESIDUAL TOKENS ENHANCE MASKED AUTOENCODERS <br>FOR SPEECH MODELING
+        </h1>
+        <div class="flex flex-wrap justify-center gap-6 text-lg font-medium text-slate-600 mb-4">
+            <span>Samir Sadok</span>
+            <span>Stéphane Lathuilière</span>
+            <span>Xavier Alameda-Pineda</span>
+        </div>
+        <div class="text-indigo-600 font-semibold uppercase tracking-widest text-sm">
+            Inria at Univ. Grenoble Alpes, CNRS, LJK, France
+        </div>
+    </header>
+
+    <div class="poster-grid">
+        
+        <!-- Column 1: Context & Theory -->
+        <div class="space-y-8">
+            <section class="glass-card p-8">
+                <div class="accent-bar"></div>
+                <h2 class="text-2xl font-bold text-slate-800 mb-4">Abstract & Context</h2>
+                <p class="text-slate-600 leading-relaxed">
+                    Natural speech is far richer than what explicit attributes (pitch, content, identity) can represent. Current methods often miss <b>residual factors</b> such as timbre variations, noise, emotion, and micro-prosody that are not captured by labeled factors.
+                </p>
+                <div class="mt-4 p-4 bg-indigo-50 rounded-xl border border-indigo-100 italic text-indigo-800 text-sm">
+                    "RT-MAE captures the information not explained by explicit attributes for richer, more natural synthesis."
+                </div>
+            </section>
+
+            <section class="glass-card p-8 bg-gradient-to-br from-indigo-900 to-slate-900 text-white">
+                <h2 class="text-2xl font-bold mb-6 text-indigo-300">RT-MAE Architecture</h2>
+                <div class="space-y-4 text-sm text-indigo-100">
+                    <p>Building on the <b>Masked Autoencoder (MAE)</b> framework, our system processes three modalities:</p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li>Quantized Mel-Spectrograms</li>
+                        <li>Explicit attributes (Pitch, Loudness, PPG)</li>
+                        <li class="font-bold text-white italic">Continuous Residual Tokens</li>
+                    </ul>
+                    <div class="mt-6 border border-white/20 rounded-2xl p-4 bg-white/5 backdrop-blur-sm">
+                        <div class="flex items-center gap-4 mb-2">
+                            <div class="w-3 h-3 bg-blue-400 rounded-full animate-pulse"></div>
+                            <span class="font-bold uppercase tracking-tighter">Cross-Attention</span>
+                        </div>
+                        <p class="text-xs">Learnable queries (Perceiver-style) aggregate relevant Mel-Spectrogram information into a compact residual representation.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Column 2: Methodology & Math -->
+        <div class="space-y-8">
+            <section class="glass-card p-8">
+                <div class="accent-bar bg-emerald-500"></div>
+                <h2 class="text-2xl font-bold text-slate-800 mb-4">Dropout Regularization</h2>
+                <p class="text-slate-600 text-sm mb-6">
+                    To prevent residual tokens from encoding all information and bypassing the attributes, we apply a dropout-based strategy:
+                </p>
+                <div class="bg-slate-50 p-6 rounded-2xl text-center shadow-inner overflow-x-auto">
+                    \[
+                    \text{Residuals} = 
+                    \begin{cases} 
+                    \mathbf{0} & \text{if } u < \tau \\
+                    \mathbf{R} & \text{otherwise}
+                    \end{cases}
+                    \]
+                    <div class="text-[10px] text-slate-400 mt-4 uppercase font-bold tracking-widest">
+                        \( u \sim \mathcal{U}(0,1) \), \( \tau = 0.5 \)
+                    </div>
+                </div>
+                <p class="mt-6 text-sm text-slate-500 italic">
+                    This forces the model to effectively utilize explicit attributes for structure while using residuals for naturalness and expressivity.
+                </p>
+            </section>
+
+            <section class="glass-card p-8">
+                <div class="accent-bar bg-blue-500"></div>
+                <h2 class="text-2xl font-bold text-slate-800 mb-6">Speech Denoising</h2>
+                <div class="flex items-start gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                    <div class="bg-blue-600 text-white p-2 rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-sm uppercase">Noise Modeling</h3>
+                        <p class="text-xs text-slate-500 mt-1">A dedicated token \( R_{noise} \) is activated only when noise is present in the input.</p>
+                    </div>
+                </div>
+                <div class="mt-4 grid grid-cols-2 gap-4">
+                    <div class="p-4 border border-blue-100 bg-blue-50/30 rounded-xl text-center">
+                        <span class="block text-xl font-bold text-blue-700">+13%</span>
+                        <span class="text-[10px] uppercase font-bold text-slate-400">Speaker Similarity</span>
+                    </div>
+                    <div class="p-4 border border-blue-100 bg-blue-50/30 rounded-xl text-center">
+                        <span class="block text-xl font-bold text-blue-700">4.25</span>
+                        <span class="text-[10px] uppercase font-bold text-slate-400">N-MOS Score</span>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Column 3: Results & Conclusions -->
+        <div class="space-y-8">
+            <section class="glass-card p-8">
+                <div class="accent-bar bg-amber-500"></div>
+                <h2 class="text-2xl font-bold text-slate-800 mb-6">Experimental Results</h2>
+                
+                <table class="w-full text-left text-sm mb-6">
+                    <thead>
+                        <tr class="text-slate-400 border-b border-slate-100">
+                            <th class="py-2 font-semibold">Model</th>
+                            <th class="py-2 font-semibold">N-MOS ↑</th>
+                            <th class="py-2 font-semibold">COS ↑</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-slate-600">
+                        <tr class="border-b border-slate-50">
+                            <td>AnCoGen</td>
+                            <td>4.04</td>
+                            <td>0.81</td>
+                        </tr>
+                        <tr class="font-bold text-indigo-600">
+                            <td class="py-3 italic text-indigo-500">RT-MAE (Ours)</td>
+                            <td class="py-3">4.32</td>
+                            <td class="py-3">0.92</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="space-y-4">
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Expressivity (EmoV-DB)</h3>
+                    <div class="relative pt-1">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-emerald-600 bg-emerald-200">
+                                Emotion Classification
+                            </span>
+                            <span class="text-xs font-semibold inline-block text-emerald-600">98.7%</span>
+                        </div>
+                        <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-emerald-100">
+                            <div style="width:98.7%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-emerald-500"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="glass-card p-8 bg-slate-50">
+                <h2 class="text-2xl font-bold text-slate-800 mb-4">Conclusion</h2>
+                <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                    RT-MAE demonstrates that a structured residual space is essential for high-fidelity speech synthesis. It enables fine-grained control while maintaining natural vocal characteristics.
+                </p>
+                <div class="text-center">
+                    <p class="text-[10px] text-slate-400 uppercase font-black tracking-widest mb-2">Code & Demo</p>
+                    <a href="https://samsad35.github.io/site-residual" class="inline-block px-6 py-2 bg-slate-900 text-white rounded-full text-xs font-bold transition hover:bg-indigo-600">
+                        samsad35.github.io/site-residual
+                    </a>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <footer class="mt-12 text-center text-slate-400 text-xs font-medium uppercase tracking-[0.3em]">
+        ICASSP 2025 • Masked Autoencoder for Speech Modeling
+    </footer>
+
+</body>
+</html>
